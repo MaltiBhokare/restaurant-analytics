@@ -1,38 +1,52 @@
 🍽️ Restaurant Order Trends Dashboard
 
-A full-stack analytics dashboard for restaurant order insights.
+A full-stack analytics dashboard for restaurant order insights built using React and PHP.
 
-This project allows users to:
+🚀 Overview
 
-View restaurants
+This project provides a complete restaurant analytics system that allows users to:
 
-Apply filters
+🔍 View and search restaurants
 
-Analyze order trends
+📅 Apply date range filters
 
-View top restaurants by revenue
+💰 Filter by order amount
 
-🔹 Tech Stack
-Frontend
+🕒 Filter by hour range
+
+📊 Analyze daily orders and revenue
+
+📈 Calculate Average Order Value (AOV)
+
+⏰ Identify peak order hour per day
+
+🏆 View Top 3 restaurants by revenue
+
+🛠 Tech Stack
+🔹 Frontend
 
 React (Vite)
 
 Framer Motion
 
-Custom analytics utilities
+Custom Analytics Utilities
 
-Backend
+Responsive UI
 
-Pure PHP (No Laravel / No Framework)
+🔹 Backend
 
-JSON mock dataset
+Pure PHP (No Framework)
 
 REST-style API
 
-📁 Project Structure
+JSON mock dataset
+
+CORS enabled
+
+📂 Project Structure
 restaurant-analytics/
 │
-├── frontend/        # React frontend
+├── frontend/        # React frontend (Vite)
 │
 ├── backend/         # PHP backend API
 │   ├── public/
@@ -41,90 +55,64 @@ restaurant-analytics/
 │   ├── data/
 │
 └── README.md
-🚀 How to Run Locally
-1️⃣ Clone Repository
+⚙️ Local Setup
+1️⃣ Clone the Repository
 git clone https://github.com/YOUR_USERNAME/restaurant-analytics.git
 cd restaurant-analytics
 2️⃣ Run Backend (PHP)
 
 Make sure PHP is installed.
 
-Open terminal:
-
 cd backend/public
 php -S 127.0.0.1:8000
 
-Backend will run at:
+Backend runs at:
 
 http://127.0.0.1:8000
 
-Test in browser:
+Test API:
 
 http://127.0.0.1:8000/index.php?path=restaurants
 3️⃣ Run Frontend
 
-Open new terminal:
+Open a new terminal:
 
 cd frontend
 npm install
 npm run dev
 
-Frontend will run at:
+Frontend runs at:
 
 http://localhost:5173
-📊 Features
-
-Restaurant list view
-
-Search and selection
-
-Date range filtering
-
-Order amount filtering
-
-Hour range filtering
-
-Daily Orders count
-
-Daily Revenue
-
-Average Order Value
-
-Peak Order Hour per day
-
-Top 3 Restaurants by Revenue
-
 🔌 API Endpoints
-Get Restaurants
-GET /index.php?path=restaurants
-Get Orders
-GET /index.php?path=orders
-Get Top Restaurants
-GET /index.php?path=analytics/top-restaurants
-Get Restaurant Trends
-GET /index.php?path=analytics/trends&restaurantId=101
+Endpoint	Description
+/index.php?path=restaurants	Get all restaurants
+/index.php?path=orders	Get all orders
+/index.php?path=analytics/top-restaurants	Get top 3 restaurants
+/index.php?path=analytics/trends&restaurantId=ID	Get analytics for restaurant
 🌍 Deployment
-
-Frontend deployed on Vercel
-Backend deployed on Render (PHP Web Service)
-
+Service	Platform
+Frontend	Vercel
+Backend	Render (PHP Web Service)
 ⚡ Performance Considerations
 
-Data filtering handled efficiently
-
-Backend aggregation logic
+Backend filtering and aggregation logic
 
 Frontend memoization using useMemo
 
-Clean separation between frontend and backend
+Clean separation of concerns
 
-📝 Notes
+Scalable API structure
 
-Uses JSON mock dataset (4 restaurants, 200 orders)
+📌 Future Improvements
 
-Easily extendable to database integration
+Database integration (MySQL / PostgreSQL)
 
-Designed with scalable API structure
+Authentication system
+
+Advanced caching
+
+Export reports (CSV / PDF)
 
 👩‍💻 Author
 
