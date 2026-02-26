@@ -1,0 +1,251 @@
+:root{
+  /* Base */
+  --bg0: #07070a;
+  --bg1: #0b0b12;
+
+  /* Accent */
+  --accent1: #7c3aed;  /* purple */
+  --accent2: #22d3ee;  /* cyan */
+  --accent3: #a3ff12;  /* lime (tiny usage) */
+
+  /* Text */
+  --text: rgba(255,255,255,0.90);
+  --textStrong: #ffffff;
+  --muted: rgba(255,255,255,0.65);
+
+  /* Border & shadow */
+  --border: rgba(255,255,255,0.10);
+  --border2: rgba(255,255,255,0.16);
+
+  /* Radii */
+  --r-lg: 18px;
+  --r-md: 14px;
+  --r-sm: 12px;
+
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  line-height: 1.5;
+}
+
+/* Background */
+body{
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(900px 500px at 10% 0%, rgba(124,58,237,0.22), transparent 60%),
+    radial-gradient(800px 550px at 90% 10%, rgba(34,211,238,0.18), transparent 60%),
+    radial-gradient(600px 450px at 50% 80%, rgba(124,58,237,0.12), transparent 60%),
+    linear-gradient(180deg, var(--bg1) 0%, var(--bg0) 100%);
+  min-height: 100vh;
+}
+
+*{ box-sizing: border-box; }
+
+/* Scrollbar */
+::-webkit-scrollbar{ width: 10px; }
+::-webkit-scrollbar-track{ background: rgba(255,255,255,0.04); }
+::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, rgba(124,58,237,0.55), rgba(34,211,238,0.40));
+  border-radius: 999px;
+}
+
+/* Layout */
+.container{
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 22px;
+}
+
+/* Title */
+.h1{
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  margin: 0 0 14px;
+  text-align: center;
+  color: var(--textStrong);
+  text-shadow: 0 10px 40px rgba(124,58,237,0.20);
+}
+
+/* Card */
+.card{
+  position: relative;
+  border-radius: var(--r-lg);
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.028));
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+  backdrop-filter: blur(10px);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.16);
+  box-shadow:
+    0 22px 55px rgba(0,0,0,0.50),
+    0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+
+.card::before{
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--r-lg);
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(124,58,237,0.35),
+    rgba(34,211,238,0.25),
+    rgba(255,255,255,0.12)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Labels */
+.label{
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+/* Inputs */
+.input, .select{
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(10,10,14,0.55);
+  color: var(--textStrong);
+  outline: none;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.input::placeholder{ color: rgba(255,255,255,0.30); }
+
+.input:focus, .select:focus{
+  border-color: rgba(34,211,238,0.50);
+  box-shadow:
+    0 0 0 4px rgba(34,211,238,0.10),
+    0 0 22px rgba(124,58,237,0.12);
+  transform: translateY(-1px);
+}
+
+/* Button */
+.button{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(34,211,238,0.14));
+  color: var(--textStrong);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.button:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.35),
+    0 0 18px rgba(124,58,237,0.18);
+}
+
+.button:active{
+  transform: translateY(0px) scale(0.99);
+}
+
+.small-muted{
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+}
+
+/* Table */
+.tableWrap{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: rgba(255,255,255,0.02);
+}
+
+table{ width: 100%; border-collapse: collapse; }
+thead{ background: rgba(255,255,255,0.045); }
+
+th, td{
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  text-align: left;
+}
+
+tbody tr:nth-child(odd){ background: rgba(255,255,255,0.018); }
+tbody tr:hover{ background: rgba(124,58,237,0.08); }
+
+.rowSelected{
+  background: rgba(34,211,238,0.10) !important;
+  box-shadow: 0 0 0 1px rgba(34,211,238,0.20) inset;
+}
+
+/* Grids */
+.grid2{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.grid3{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1000px){
+  .grid2{ grid-template-columns: 1fr; }
+  .grid3{ grid-template-columns: 1fr; }
+  .h1{ font-size: 28px; }
+}
+
+/* =======================================================
+   DATE INPUT ICON (FINAL: SINGLE ICON)
+   ======================================================= */
+
+.dateWrap{
+  position: relative;
+}
+
+.dateWrap .dateInput{
+  color-scheme: dark;
+  padding-right: 44px;
+}
+
+/* hide native icon but keep click area */
+.dateWrap .dateInput::-webkit-calendar-picker-indicator{
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* our custom icon */
+.dateWrap::after{
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 36px; /* label + input spacing; works best */
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 10px rgba(34,211,238,0.35));
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 2v2H5a2 2 0 0 0-2 2v2h18V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm14 8H3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V10z'/%3E%3C/svg%3E");
+}
