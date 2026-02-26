@@ -53,7 +53,7 @@ export default function TopRestaurants({ top3 = [] }) {
                   gap: 12,
                 }}
               >
-                {/* Left */}
+               
                 <div style={{ minWidth: 0 }}>
                   <div
                     style={{
@@ -104,7 +104,7 @@ export default function TopRestaurants({ top3 = [] }) {
                   </div>
                 </div>
 
-                {/* Right */}
+                
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
                   <div
                     style={{

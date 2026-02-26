@@ -14,7 +14,7 @@ export default function DailyOrdersChart({ data = [] }) {
               contentStyle={{ background: "#0f0f10", border: "1px solid rgba(255,255,255,0.12)" }}
               labelStyle={{ color: "white" }}
             />
-            {/* ✅ FIX: orders */}
+           
             <Line dataKey="orders" stroke="#22d3ee" dot={false} />
           </LineChart>
         </ResponsiveContainer>

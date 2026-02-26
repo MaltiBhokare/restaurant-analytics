@@ -22,11 +22,11 @@ const fadeUp = {
   }),
 };
 
-// ✅ IMPORTANT: your backend router is api/index.php
+
 const API_BASE = "http://127.0.0.1:8000/api/index.php";
 
 export default function Dashboard() {
-  // ✅ Data comes from backend
+  
   const [restaurants, setRestaurants] = useState([]);
   const [orders, setOrders] = useState([]);
 
@@ -44,7 +44,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ✅ Fetch restaurants + orders from PHP backend
+  
   useEffect(() => {
     let alive = true;
 
@@ -66,7 +66,7 @@ export default function Dashboard() {
 
         if (!alive) return;
 
-        // supports either plain array OR {data:[...]}
+        
         setRestaurants(Array.isArray(rJson) ? rJson : rJson.data || []);
         setOrders(Array.isArray(oJson) ? oJson : oJson.data || []);
       } catch (e) {
@@ -84,14 +84,14 @@ export default function Dashboard() {
     };
   }, []);
 
-  // ✅ If selected restaurant not present after refresh, reset it
+  
   useEffect(() => {
     if (!selected) return;
     const stillExists = restaurants.some((r) => r.id === selected.id);
     if (!stillExists) setSelected(null);
   }, [restaurants, selected]);
 
-  // ✅ Restaurant-specific filtered orders
+ 
   const filteredOrders = useMemo(() => {
     return applyOrderFilters(orders, filters, selected?.id);
   }, [orders, filters, selected?.id]);
@@ -99,7 +99,7 @@ export default function Dashboard() {
   const daily = useMemo(() => groupDailyMetrics(filteredOrders), [filteredOrders]);
   const peak = useMemo(() => peakHourPerDay(filteredOrders), [filteredOrders]);
 
-  // ✅ Top-3 ignores selected restaurant (only date/amount/hour filters)
+  
   const top3 = useMemo(() => {
     const allInRange = applyOrderFilters(orders, filters);
     return topRestaurantsByRevenue(restaurants, allInRange, 3);
@@ -111,7 +111,7 @@ export default function Dashboard() {
         Restaurant Order Trends Dashboard
       </motion.h1>
 
-      {/* ✅ Loading / Error UI */}
+      
       {loading ? (
         <div className="card" style={{ padding: 14 }}>
           Loading data from PHP backend...
@@ -125,7 +125,7 @@ export default function Dashboard() {
           <div className="small-muted" style={{ marginTop: 6 }}>{error}</div>
 
           <div className="small-muted" style={{ marginTop: 10 }}>
-            ✅ Fix checklist:
+            Fix checklist:
             <ul style={{ margin: "6px 0 0 18px" }}>
               <li>Open in browser: <b>{API_BASE}?path=restaurants</b></li>
               <li>Open in browser: <b>{API_BASE}?path=orders</b></li>

@@ -1,16 +1,10 @@
 <?php
-// backend/src/analytics.php
+
 
 require_once __DIR__ . "/helpers.php";
 require_once __DIR__ . "/data.php";
 
-/**
- * Apply filters:
- * - restaurantId (optional)
- * - from / to (YYYY-MM-DD)
- * - amountMin / amountMax
- * - hourFrom / hourTo (0..23)
- */
+
 function apply_order_filters($orders, $filters, $restaurantId = null) {
   $amountMin = $filters["amountMin"];
   $amountMax = $filters["amountMax"];
@@ -19,7 +13,7 @@ function apply_order_filters($orders, $filters, $restaurantId = null) {
   $from      = $filters["from"];
   $to        = $filters["to"];
 
-  // If from/to empty -> auto use dataset min/max
+  
   if (!$from || !$to) {
     $min = null; $max = null;
     foreach ($orders as $o) {
@@ -36,7 +30,7 @@ function apply_order_filters($orders, $filters, $restaurantId = null) {
     if ($restaurantId !== null && (int)$o["restaurant_id"] !== (int)$restaurantId) continue;
 
     $day = substr($o["order_time"], 0, 10);
-    // date range
+    
     if ($from && $day < $from) continue;
     if ($to && $day > $to) continue;
 
@@ -78,9 +72,7 @@ function group_daily_metrics($orders) {
   return $result;
 }
 
-/**
- * Returns: [{ date, peakHour, ordersAtPeak }]
- */
+
 function peak_hour_per_day($orders) {
   $dayHourCount = [];
 
@@ -117,9 +109,7 @@ function peak_hour_per_day($orders) {
   return $result;
 }
 
-/**
- * Returns restaurants with revenue field, sorted desc, slice topN
- */
+
 function top_restaurants_by_revenue($restaurants, $orders, $topN = 3) {
   $rev = [];
 
@@ -141,7 +131,7 @@ function top_restaurants_by_revenue($restaurants, $orders, $topN = 3) {
   return array_slice($list, 0, $topN);
 }
 
-/* ---------------- API handlers ---------------- */
+
 
 function read_filters_from_query() {
   return [
@@ -154,9 +144,7 @@ function read_filters_from_query() {
   ];
 }
 
-/**
- * GET /api/index.php?path=restaurants&search=&cuisine=&location=&sort=name&order=asc&page=1&perPage=10
- */
+
 function handle_restaurants() {
   $restaurants = get_restaurants();
 
@@ -166,7 +154,7 @@ function handle_restaurants() {
   $sort = trim((string)q("sort", "name"));       // name|location|cuisine
   $order = strtolower(trim((string)q("order", "asc"))); // asc|desc
 
-  // filter
+  
   $filtered = array_filter($restaurants, function($r) use ($search, $cuisine, $location) {
     if ($cuisine && ($r["cuisine"] ?? "") !== $cuisine) return false;
     if ($location && ($r["location"] ?? "") !== $location) return false;
@@ -180,7 +168,7 @@ function handle_restaurants() {
 
   $filtered = array_values($filtered);
 
-  // sort
+  
   $allowed = ["name", "location", "cuisine", "id"];
   if (!in_array($sort, $allowed, true)) $sort = "name";
   usort($filtered, function($a, $b) use ($sort, $order) {
@@ -190,7 +178,7 @@ function handle_restaurants() {
     return $order === "desc" ? -$cmp : $cmp;
   });
 
-  // pagination
+  
   $page = max(1, (int)q("page", 1));
   $perPage = max(1, min(100, (int)q("perPage", 10)));
   $total = count($filtered);
@@ -208,9 +196,7 @@ function handle_restaurants() {
   ];
 }
 
-/**
- * GET /api/index.php?path=analytics/top-restaurants&from=&to=&amountMin=&amountMax=&hourFrom=&hourTo=&top=3
- */
+
 function handle_top_restaurants() {
   $filters = read_filters_from_query();
   $topN = max(1, min(20, (int)q("top", 3)));
@@ -230,9 +216,7 @@ function handle_top_restaurants() {
   return $resp;
 }
 
-/**
- * GET /api/index.php?path=analytics/trends&restaurantId=101&from=&to=&amountMin=&amountMax=&hourFrom=&hourTo=
- */
+
 function handle_trends() {
   $restaurantId = to_int_or_null(q("restaurantId"));
   if ($restaurantId === null) {

@@ -1,6 +1,4 @@
-// src/lib/analytics.js
 
-// ✅ Filters orders by: restaurantId, date range, amount range, hour range
 export function applyOrderFilters(orders, filters = {}, restaurantId) {
   if (!Array.isArray(orders)) return [];
 
@@ -9,7 +7,7 @@ export function applyOrderFilters(orders, filters = {}, restaurantId) {
   const hourFrom = filters.hourFrom ?? null;
   const hourTo = filters.hourTo ?? null;
 
-  // ✅ If from/to empty → auto use dataset min/max
+ 
   let fromISO = (filters.from || "").trim();
   let toISO = (filters.to || "").trim();
 
@@ -46,7 +44,7 @@ export function applyOrderFilters(orders, filters = {}, restaurantId) {
   });
 }
 
-// ✅ Daily metrics: { date, orders, revenue, aov }
+
 export function groupDailyMetrics(orders = []) {
   const map = new Map();
 
@@ -67,7 +65,7 @@ export function groupDailyMetrics(orders = []) {
     }));
 }
 
-// ✅ Peak hour per day: { date, peakHour, ordersAtPeak }
+
 export function peakHourPerDay(orders = []) {
   const dayHourCount = new Map();
 
@@ -102,7 +100,7 @@ export function peakHourPerDay(orders = []) {
   return result.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-// ✅ Top restaurants by revenue in given filtered orders
+
 export function topRestaurantsByRevenue(restaurants = [], orders = [], topN = 3) {
   const revenueMap = new Map();
 

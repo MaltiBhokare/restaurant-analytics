@@ -32,7 +32,7 @@ export default function RestaurantDetails({ restaurant, daily = [], peak = [] })
             transition={{ duration: 0.35 }}
             style={{ display: "flex", flexDirection: "column", gap: 14 }}
           >
-            {/* Header */}
+           
             <div>
               <h2 style={{ margin: 0, color: "var(--textStrong)" }}>
                 {restaurant.name}
@@ -42,7 +42,7 @@ export default function RestaurantDetails({ restaurant, daily = [], peak = [] })
               </div>
             </div>
 
-            {/* Charts */}
+           
             {!hasDaily ? (
               <div className="small-muted" style={{ padding: 8 }}>
                 No daily data for selected filters.
@@ -61,7 +61,7 @@ export default function RestaurantDetails({ restaurant, daily = [], peak = [] })
               </div>
             )}
 
-            {/* Peak hour table */}
+            
             <div className="card" style={{ padding: 12 }}>
               {!hasPeak ? (
                 <div className="small-muted" style={{ padding: 8 }}>

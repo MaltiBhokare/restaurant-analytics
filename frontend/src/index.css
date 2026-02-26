@@ -1,23 +1,23 @@
 :root{
-  /* Base */
+ 
   --bg0: #07070a;
   --bg1: #0b0b12;
 
-  /* Accent */
-  --accent1: #7c3aed;  /* purple */
-  --accent2: #22d3ee;  /* cyan */
-  --accent3: #a3ff12;  /* lime (tiny usage) */
+  
+  --accent1: #7c3aed;  
+  --accent2: #22d3ee;  
+  --accent3: #a3ff12;  
 
-  /* Text */
+  
   --text: rgba(255,255,255,0.90);
   --textStrong: #ffffff;
   --muted: rgba(255,255,255,0.65);
 
-  /* Border & shadow */
+ 
   --border: rgba(255,255,255,0.10);
   --border2: rgba(255,255,255,0.16);
 
-  /* Radii */
+  
   --r-lg: 18px;
   --r-md: 14px;
   --r-sm: 12px;
@@ -26,7 +26,7 @@
   line-height: 1.5;
 }
 
-/* Background */
+
 body{
   margin: 0;
   color: var(--text);
@@ -40,7 +40,7 @@ body{
 
 *{ box-sizing: border-box; }
 
-/* Scrollbar */
+
 ::-webkit-scrollbar{ width: 10px; }
 ::-webkit-scrollbar-track{ background: rgba(255,255,255,0.04); }
 ::-webkit-scrollbar-thumb{
@@ -48,14 +48,14 @@ body{
   border-radius: 999px;
 }
 
-/* Layout */
+
 .container{
   max-width: 1220px;
   margin: 0 auto;
   padding: 22px;
 }
 
-/* Title */
+
 .h1{
   font-size: 36px;
   font-weight: 900;
@@ -66,7 +66,7 @@ body{
   text-shadow: 0 10px 40px rgba(124,58,237,0.20);
 }
 
-/* Card */
+
 .card{
   position: relative;
   border-radius: var(--r-lg);
@@ -109,7 +109,7 @@ body{
   opacity: 0.6;
 }
 
-/* Labels */
+
 .label{
   font-size: 12px;
   color: var(--muted);
@@ -117,7 +117,7 @@ body{
   display: inline-block;
 }
 
-/* Inputs */
+
 .input, .select{
   width: 100%;
   padding: 11px 12px;
@@ -139,7 +139,7 @@ body{
   transform: translateY(-1px);
 }
 
-/* Button */
+
 .button{
   border: 1px solid rgba(255,255,255,0.14);
   background: linear-gradient(135deg, rgba(124,58,237,0.22), rgba(34,211,238,0.14));
@@ -167,7 +167,7 @@ body{
   color: rgba(255,255,255,0.55);
 }
 
-/* Table */
+
 .tableWrap{
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: var(--r-md);
@@ -192,7 +192,7 @@ tbody tr:hover{ background: rgba(124,58,237,0.08); }
   box-shadow: 0 0 0 1px rgba(34,211,238,0.20) inset;
 }
 
-/* Grids */
+
 .grid2{
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -211,9 +211,6 @@ tbody tr:hover{ background: rgba(124,58,237,0.08); }
   .h1{ font-size: 28px; }
 }
 
-/* =======================================================
-   DATE INPUT ICON (FINAL: SINGLE ICON)
-   ======================================================= */
 
 .dateWrap{
   position: relative;
@@ -224,7 +221,7 @@ tbody tr:hover{ background: rgba(124,58,237,0.08); }
   padding-right: 44px;
 }
 
-/* hide native icon but keep click area */
+
 .dateWrap .dateInput::-webkit-calendar-picker-indicator{
   opacity: 0;
   position: absolute;
@@ -234,12 +231,11 @@ tbody tr:hover{ background: rgba(124,58,237,0.08); }
   cursor: pointer;
 }
 
-/* our custom icon */
 .dateWrap::after{
   content: "";
   position: absolute;
   right: 14px;
-  top: 36px; /* label + input spacing; works best */
+  top: 36px; 
   width: 18px;
   height: 18px;
   pointer-events: none;

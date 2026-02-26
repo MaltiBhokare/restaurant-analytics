@@ -1,5 +1,5 @@
 <?php
-// backend/src/data.php
+
 
 function load_json($filename) {
   $path = __DIR__ . "/../data/" . $filename;

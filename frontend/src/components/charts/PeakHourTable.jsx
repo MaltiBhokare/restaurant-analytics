@@ -27,7 +27,7 @@ export default function PeakHourTable({ data = [] }) {
                 <tr key={r.date}>
                   <td>{r.date}</td>
                   <td>{String(r.peakHour).padStart(2, "0")}:00</td>
-                  {/* ✅ FIX: ordersAtPeak */}
+                  
                   <td>{r.ordersAtPeak}</td>
                 </tr>
               ))

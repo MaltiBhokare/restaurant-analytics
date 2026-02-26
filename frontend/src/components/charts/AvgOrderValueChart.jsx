@@ -14,7 +14,7 @@ export default function AvgOrderValueChart({ data = [] }) {
               contentStyle={{ background: "#0f0f10", border: "1px solid rgba(255,255,255,0.12)" }}
               labelStyle={{ color: "white" }}
             />
-            {/* ✅ FIX: aov */}
+            
             <Line dataKey="aov" stroke="#22d3ee" dot={false} />
           </LineChart>
         </ResponsiveContainer>

@@ -1,4 +1,4 @@
-// src/components/filters/FiltersBar.jsx
+
 export default function FiltersBar({ filters, setFilters }) {
   const clampHour = (v) => {
     const n = Number(v);
@@ -7,7 +7,7 @@ export default function FiltersBar({ filters, setFilters }) {
   };
 
   const setFrom = (val) => {
-    // if From > To => move To = From
+    
     if (filters.to && val && val > filters.to) {
       setFilters({ ...filters, from: val, to: val });
     } else {
@@ -16,7 +16,7 @@ export default function FiltersBar({ filters, setFilters }) {
   };
 
   const setTo = (val) => {
-    // if To < From => move From = To
+    
     if (filters.from && val && val < filters.from) {
       setFilters({ ...filters, to: val, from: val });
     } else {
@@ -27,7 +27,7 @@ export default function FiltersBar({ filters, setFilters }) {
   const setAmountMin = (val) => {
     const n = val === "" ? undefined : Number(val);
     const amountMax = filters.amountMax;
-    // if min > max => move max = min
+    
     if (n != null && amountMax != null && n > amountMax) {
       setFilters({ ...filters, amountMin: n, amountMax: n });
     } else {
@@ -38,7 +38,7 @@ export default function FiltersBar({ filters, setFilters }) {
   const setAmountMax = (val) => {
     const n = val === "" ? undefined : Number(val);
     const amountMin = filters.amountMin;
-    // if max < min => move min = max
+    
     if (n != null && amountMin != null && n < amountMin) {
       setFilters({ ...filters, amountMax: n, amountMin: n });
     } else {
@@ -50,7 +50,7 @@ export default function FiltersBar({ filters, setFilters }) {
     const n = val === "" ? undefined : clampHour(val);
     const hourTo = filters.hourTo;
 
-    // if from > to => move to = from (simple swap behavior)
+    
     if (n != null && hourTo != null && n > hourTo) {
       setFilters({ ...filters, hourFrom: n, hourTo: n });
     } else {
@@ -62,7 +62,7 @@ export default function FiltersBar({ filters, setFilters }) {
     const n = val === "" ? undefined : clampHour(val);
     const hourFrom = filters.hourFrom;
 
-    // if to < from => move from = to
+    
     if (n != null && hourFrom != null && n < hourFrom) {
       setFilters({ ...filters, hourTo: n, hourFrom: n });
     } else {
@@ -92,7 +92,7 @@ export default function FiltersBar({ filters, setFilters }) {
           alignItems: "end",
         }}
       >
-        {/* From */}
+        
         <div className="dateWrap">
           <span className="label">From</span>
           <input
@@ -103,7 +103,7 @@ export default function FiltersBar({ filters, setFilters }) {
           />
         </div>
 
-        {/* To */}
+        
         <div className="dateWrap">
           <span className="label">To</span>
           <input
@@ -114,7 +114,7 @@ export default function FiltersBar({ filters, setFilters }) {
           />
         </div>
 
-        {/* Amount Min */}
+        
         <div>
           <span className="label">Amount Min</span>
           <input
@@ -126,7 +126,7 @@ export default function FiltersBar({ filters, setFilters }) {
           />
         </div>
 
-        {/* Amount Max */}
+        
         <div>
           <span className="label">Amount Max</span>
           <input
@@ -138,7 +138,7 @@ export default function FiltersBar({ filters, setFilters }) {
           />
         </div>
 
-        {/* Hour From */}
+        
         <div>
           <span className="label">Hour From</span>
           <input
@@ -152,7 +152,7 @@ export default function FiltersBar({ filters, setFilters }) {
           />
         </div>
 
-        {/* Hour To */}
+       
         <div>
           <span className="label">Hour To</span>
           <input
