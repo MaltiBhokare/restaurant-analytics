@@ -1,35 +1,30 @@
 <?php
 // backend/api/index.php
 
-// IMPORTANT: No spaces/newlines before <?php
-
+// ✅ ALWAYS set headers before any output
 header("Content-Type: application/json; charset=utf-8");
 
-// ---- CORS FIX (InfinityFree + Vercel) ----
-$origin = $_SERVER['HTTP_ORIGIN'] ?? "";
-
-// Add your Vercel URLs here (both production + preview if any)
-$allowed_origins = [
+// ✅ CORS (allow your Vercel app)
+$allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-  "https://restaurant-analytics-hdbd.vercel.app",
-  // Add any other vercel domain you have:
-  // "https://restaurant-analytics-ten.vercel.app",
+  "https://restaurant-analytics-rl5r.vercel.app"
 ];
 
-if ($origin && in_array($origin, $allowed_origins)) {
-  header("Access-Control-Allow-Origin: $origin");
+$origin = $_SERVER["HTTP_ORIGIN"] ?? "";
+
+if (in_array($origin, $allowedOrigins, true)) {
+  header("Access-Control-Allow-Origin: " . $origin);
+  header("Vary: Origin"); // important for caches/CDN
 } else {
-  // fallback (some hosts block wildcard; if wildcard fails, keep only allowed origins above)
+  // fallback (some hosts strip dynamic origins)
   header("Access-Control-Allow-Origin: *");
 }
 
-header("Vary: Origin");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-header("Access-Control-Max-Age: 86400");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// Preflight
+// ✅ Handle preflight
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
   http_response_code(204);
   exit;
@@ -43,20 +38,18 @@ $path = $_GET["path"] ?? "";
 $path = trim($path, "/");
 
 try {
-  // Health
   if ($path === "" || $path === "health") {
     echo json_encode(["ok" => true, "message" => "PHP API is running"], JSON_UNESCAPED_UNICODE);
     exit;
   }
 
-  // Restaurants
   if ($path === "restaurants") {
     echo json_encode(handle_restaurants(), JSON_UNESCAPED_UNICODE);
     exit;
   }
 
-  // Orders (if you have handle_orders use it else load json)
   if ($path === "orders") {
+    // if you have handle_orders in analytics.php or data.php
     if (function_exists("handle_orders")) {
       echo json_encode(handle_orders(), JSON_UNESCAPED_UNICODE);
       exit;
@@ -74,7 +67,6 @@ try {
     exit;
   }
 
-  // Analytics endpoints (optional)
   if ($path === "analytics/top-restaurants") {
     echo json_encode(handle_top_restaurants(), JSON_UNESCAPED_UNICODE);
     exit;
