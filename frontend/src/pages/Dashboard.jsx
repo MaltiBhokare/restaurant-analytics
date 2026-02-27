@@ -22,14 +22,12 @@ const fadeUp = {
   }),
 };
 
-// ✅ IMPORTANT: Keep base without ?path= here
-const API_BASE =
-  import.meta.env.VITE_API_BASE ||
-  "https://phpctud2422.infinityfreeapp.com/api/index.php";
 
-const apiUrl = (p) => `${API_BASE}?path=${encodeURIComponent(p)}`;
+const API_BASE = "http://127.0.0.1:8000/api/index.php";
+
 
 export default function Dashboard() {
+
   const [restaurants, setRestaurants] = useState([]);
   const [orders, setOrders] = useState([]);
 
@@ -47,6 +45,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+
   useEffect(() => {
     let alive = true;
 
@@ -56,23 +55,25 @@ export default function Dashboard() {
         setError("");
 
         const [rRes, oRes] = await Promise.all([
-          fetch(apiUrl("restaurants"), { method: "GET", mode: "cors" }),
-          fetch(apiUrl("orders"), { method: "GET", mode: "cors" }),
+          fetch(`${API_BASE}?path=restaurants`),
+          fetch(`${API_BASE}?path=orders`),
         ]);
 
-        if (!rRes.ok) throw new Error(`Restaurants API failed: ${rRes.status}`);
-        if (!oRes.ok) throw new Error(`Orders API failed: ${oRes.status}`);
+        if (!rRes.ok) throw new Error("Failed to load restaurants from backend.");
+        if (!oRes.ok) throw new Error("Failed to load orders from backend.");
 
         const rJson = await rRes.json();
         const oJson = await oRes.json();
 
         if (!alive) return;
 
-        setRestaurants(rJson?.data || rJson || []);
-        setOrders(oJson?.data || oJson || []);
+
+        setRestaurants(Array.isArray(rJson) ? rJson : rJson.data || []);
+        setOrders(Array.isArray(oJson) ? oJson : oJson.data || []);
+        
       } catch (e) {
         if (!alive) return;
-        setError(e?.message || "Failed to fetch (CORS / Network)");
+        setError(e?.message || "Backend error");
       } finally {
         if (!alive) return;
         setLoading(false);
@@ -85,11 +86,13 @@ export default function Dashboard() {
     };
   }, []);
 
+
   useEffect(() => {
     if (!selected) return;
     const stillExists = restaurants.some((r) => r.id === selected.id);
     if (!stillExists) setSelected(null);
   }, [restaurants, selected]);
+
 
   const filteredOrders = useMemo(() => {
     return applyOrderFilters(orders, filters, selected?.id);
@@ -97,6 +100,7 @@ export default function Dashboard() {
 
   const daily = useMemo(() => groupDailyMetrics(filteredOrders), [filteredOrders]);
   const peak = useMemo(() => peakHourPerDay(filteredOrders), [filteredOrders]);
+
 
   const top3 = useMemo(() => {
     const allInRange = applyOrderFilters(orders, filters);
@@ -109,11 +113,12 @@ export default function Dashboard() {
         Restaurant Order Trends Dashboard
       </motion.h1>
 
+
       {loading ? (
         <div className="card" style={{ padding: 14 }}>
-          Loading data from backend...
+          Loading data from PHP backend...
           <div className="small-muted" style={{ marginTop: 6 }}>
-            Testing: {apiUrl("restaurants")} and {apiUrl("orders")}
+            Checking: {API_BASE}?path=restaurants and {API_BASE}?path=orders
           </div>
         </div>
       ) : error ? (
@@ -124,9 +129,9 @@ export default function Dashboard() {
           <div className="small-muted" style={{ marginTop: 10 }}>
             Fix checklist:
             <ul style={{ margin: "6px 0 0 18px" }}>
-              <li>Open: <b>{apiUrl("restaurants")}</b></li>
-              <li>Open: <b>{apiUrl("orders")}</b></li>
-              <li>If browser works but app fails → CORS issue in PHP</li>
+              <li>Open in browser: <b>{API_BASE}?path=restaurants</b></li>
+              <li>Open in browser: <b>{API_BASE}?path=orders</b></li>
+              <li>If blocked: add CORS headers in backend/api/index.php</li>
             </ul>
           </div>
         </div>
