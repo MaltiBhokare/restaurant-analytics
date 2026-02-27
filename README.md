@@ -83,3 +83,9 @@ Backend: Render
 ## 👩‍💻 Author
 
 Malti Bhokare
+<img width="1907" height="956" alt="R1" src="https://github.com/user-attachments/assets/457abab0-9414-48b9-8986-6ff568289524" />
+<img width="1907" height="968" alt="R2" src="https://github.com/user-attachments/assets/f4b49f06-80a8-4a2b-8af9-f998b7cadc0f" />
+<img width="1907" height="957" alt="R3" src="https://github.com/user-attachments/assets/57647c83-0ac4-46f3-8f42-596e45bdedd1" />
+
+
+
