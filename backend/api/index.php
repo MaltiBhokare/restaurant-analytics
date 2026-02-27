@@ -1,17 +1,16 @@
 <?php
 
-
 header("Content-Type: application/json; charset=utf-8");
 
 
-// header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Max-Age: 86400");
 
 
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-  http_response_code(200);
+  http_response_code(204);
   exit;
 }
 
@@ -23,60 +22,51 @@ require_once __DIR__ . "/../src/analytics.php";
 $path = $_GET["path"] ?? "";
 $path = trim($path, "/");
 
+
+function respond($data, int $status = 200) {
+  http_response_code($status);
+  echo json_encode($data, JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
 try {
-  
+ 
   if ($path === "" || $path === "health") {
-    echo json_encode(["ok" => true, "message" => "PHP API is running"], JSON_UNESCAPED_UNICODE);
-    exit;
+    respond(["ok" => true, "message" => "PHP API is running"]);
   }
 
  
   if ($path === "restaurants") {
-    echo json_encode(handle_restaurants(), JSON_UNESCAPED_UNICODE);
-    exit;
+    respond(handle_restaurants());
+  }
+
+  if ($path === "orders") {
+    if (function_exists("handle_orders")) {
+      respond(handle_orders());
+    }
+
+    $file = __DIR__ . "/../data/orders.json";
+    if (!file_exists($file)) {
+      respond(["error" => "orders.json not found"], 500);
+    }
+
+    $orders = json_decode(file_get_contents($file), true);
+    respond(["data" => ($orders ?: [])]);
   }
 
   
-  if ($path === "orders") {
-    
-    if (function_exists("handle_orders")) {
-      echo json_encode(handle_orders(), JSON_UNESCAPED_UNICODE);
-      exit;
-    }
-
-    
-    $file = __DIR__ . "/../data/orders.json";
-    if (!file_exists($file)) {
-      http_response_code(500);
-      echo json_encode(["error" => "orders.json not found"]);
-      exit;
-    }
-    $orders = json_decode(file_get_contents($file), true);
-    echo json_encode($orders ?: [], JSON_UNESCAPED_UNICODE);
-    exit;
-  }
-
-  // ✅ Top restaurants by revenue
   if ($path === "analytics/top-restaurants") {
-    echo json_encode(handle_top_restaurants(), JSON_UNESCAPED_UNICODE);
-    exit;
+    respond(handle_top_restaurants());
   }
 
-  // ✅ Trends for selected restaurant
+  
   if ($path === "analytics/trends") {
-    // expects restaurantId
-    echo json_encode(handle_trends(), JSON_UNESCAPED_UNICODE);
-    exit;
+    respond(handle_trends());
   }
 
-  // ✅ Not found
-  http_response_code(404);
-  echo json_encode(["error" => "Route not found", "path" => $path], JSON_UNESCAPED_UNICODE);
+ 
+  respond(["error" => "Route not found", "path" => $path], 404);
 
 } catch (Throwable $e) {
-  http_response_code(500);
-  echo json_encode(
-    ["error" => "Server error", "message" => $e->getMessage()],
-    JSON_UNESCAPED_UNICODE
-  );
+  respond(["error" => "Server error", "message" => $e->getMessage()], 500);
 }

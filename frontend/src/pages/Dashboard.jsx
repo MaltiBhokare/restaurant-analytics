@@ -23,11 +23,15 @@ const fadeUp = {
 };
 
 
-// const API_BASE = "http://127.0.0.1:8000/api/index.php";
-const API_BASE = "https://phpctud2422.infinityfreeapp.com/api/index.php?path=";
+const API_ENTRY = "https://phpctud2422.infinityfreeapp.com/api/index.php";
+
+
+const apiUrl = (path) => `${API_ENTRY}?path=${encodeURIComponent(path)}`;
+
+
+const toArray = (json) => (Array.isArray(json) ? json : json?.data || []);
 
 export default function Dashboard() {
-
   const [restaurants, setRestaurants] = useState([]);
   const [orders, setOrders] = useState([]);
 
@@ -45,7 +49,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-
+  
   useEffect(() => {
     let alive = true;
 
@@ -54,25 +58,9 @@ export default function Dashboard() {
         setLoading(true);
         setError("");
 
-        // const [rRes, oRes] = await Promise.all([
-        //   fetch(`${API_BASE}?path=restaurants`),
-        //   fetch(`${API_BASE}?path=orders`),
-        // ]);
-
-        // if (!rRes.ok) throw new Error("Failed to load restaurants from backend.");
-        // if (!oRes.ok) throw new Error("Failed to load orders from backend.");
-
-        // const rJson = await rRes.json();
-        // const oJson = await oRes.json();
-
-        // if (!alive) return;
-
-
-        // setRestaurants(Array.isArray(rJson) ? rJson : rJson.data || []);
-        // setOrders(Array.isArray(oJson) ? oJson : oJson.data || []);
         const [rRes, oRes] = await Promise.all([
-          fetch(`${API_BASE}restaurants`),
-          fetch(`${API_BASE}orders`),
+          fetch(apiUrl("restaurants")),
+          fetch(apiUrl("orders")),
         ]);
 
         if (!rRes.ok) throw new Error("Failed to load restaurants");
@@ -81,8 +69,10 @@ export default function Dashboard() {
         const rJson = await rRes.json();
         const oJson = await oRes.json();
 
-        setRestaurants(rJson?.data || []);
-        setOrders(oJson?.data || []);
+        if (!alive) return;
+
+        setRestaurants(toArray(rJson));
+        setOrders(toArray(oJson));
       } catch (e) {
         if (!alive) return;
         setError(e?.message || "Backend error");
@@ -98,14 +88,14 @@ export default function Dashboard() {
     };
   }, []);
 
-
+  
   useEffect(() => {
     if (!selected) return;
     const stillExists = restaurants.some((r) => r.id === selected.id);
     if (!stillExists) setSelected(null);
   }, [restaurants, selected]);
 
-
+ 
   const filteredOrders = useMemo(() => {
     return applyOrderFilters(orders, filters, selected?.id);
   }, [orders, filters, selected?.id]);
@@ -113,7 +103,7 @@ export default function Dashboard() {
   const daily = useMemo(() => groupDailyMetrics(filteredOrders), [filteredOrders]);
   const peak = useMemo(() => peakHourPerDay(filteredOrders), [filteredOrders]);
 
-
+  
   const top3 = useMemo(() => {
     const allInRange = applyOrderFilters(orders, filters);
     return topRestaurantsByRevenue(restaurants, allInRange, 3);
@@ -121,16 +111,25 @@ export default function Dashboard() {
 
   return (
     <div className="container">
-      <motion.h1 className="h1" variants={fadeUp} initial="hidden" animate="show" custom={0}>
+      <motion.h1
+        className="h1"
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        custom={0}
+      >
         Restaurant Order Trends Dashboard
       </motion.h1>
-
 
       {loading ? (
         <div className="card" style={{ padding: 14 }}>
           Loading data from PHP backend...
           <div className="small-muted" style={{ marginTop: 6 }}>
-            Checking: {API_BASE}?path=restaurants and {API_BASE}?path=orders
+            Checking:
+            <br />
+            {apiUrl("restaurants")}
+            <br />
+            {apiUrl("orders")}
           </div>
         </div>
       ) : error ? (
@@ -141,9 +140,13 @@ export default function Dashboard() {
           <div className="small-muted" style={{ marginTop: 10 }}>
             Fix checklist:
             <ul style={{ margin: "6px 0 0 18px" }}>
-              <li>Open in browser: <b>{API_BASE}?path=restaurants</b></li>
-              <li>Open in browser: <b>{API_BASE}?path=orders</b></li>
-              <li>If blocked: add CORS headers in backend/api/index.php</li>
+              <li>
+                Open in browser: <b>{apiUrl("restaurants")}</b>
+              </li>
+              <li>
+                Open in browser: <b>{apiUrl("orders")}</b>
+              </li>
+              <li>If blocked: ensure CORS headers in backend/api/index.php</li>
             </ul>
           </div>
         </div>
