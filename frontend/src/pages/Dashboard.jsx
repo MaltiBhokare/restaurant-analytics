@@ -23,10 +23,11 @@ const fadeUp = {
 };
 
 
-const API_BASE = "http://127.0.0.1:8000/api/index.php";
+// const API_BASE = "http://127.0.0.1:8000/api/index.php";
+const API_BASE = "https://phpctud2422.infinityfreeapp.com/api/index.php?path=";
 
 export default function Dashboard() {
-  
+
   const [restaurants, setRestaurants] = useState([]);
   const [orders, setOrders] = useState([]);
 
@@ -44,7 +45,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  
+
   useEffect(() => {
     let alive = true;
 
@@ -53,22 +54,35 @@ export default function Dashboard() {
         setLoading(true);
         setError("");
 
+        // const [rRes, oRes] = await Promise.all([
+        //   fetch(`${API_BASE}?path=restaurants`),
+        //   fetch(`${API_BASE}?path=orders`),
+        // ]);
+
+        // if (!rRes.ok) throw new Error("Failed to load restaurants from backend.");
+        // if (!oRes.ok) throw new Error("Failed to load orders from backend.");
+
+        // const rJson = await rRes.json();
+        // const oJson = await oRes.json();
+
+        // if (!alive) return;
+
+
+        // setRestaurants(Array.isArray(rJson) ? rJson : rJson.data || []);
+        // setOrders(Array.isArray(oJson) ? oJson : oJson.data || []);
         const [rRes, oRes] = await Promise.all([
-          fetch(`${API_BASE}?path=restaurants`),
-          fetch(`${API_BASE}?path=orders`),
+          fetch(`${API_BASE}restaurants`),
+          fetch(`${API_BASE}orders`),
         ]);
 
-        if (!rRes.ok) throw new Error("Failed to load restaurants from backend.");
-        if (!oRes.ok) throw new Error("Failed to load orders from backend.");
+        if (!rRes.ok) throw new Error("Failed to load restaurants");
+        if (!oRes.ok) throw new Error("Failed to load orders");
 
         const rJson = await rRes.json();
         const oJson = await oRes.json();
 
-        if (!alive) return;
-
-        
-        setRestaurants(Array.isArray(rJson) ? rJson : rJson.data || []);
-        setOrders(Array.isArray(oJson) ? oJson : oJson.data || []);
+        setRestaurants(rJson?.data || []);
+        setOrders(oJson?.data || []);
       } catch (e) {
         if (!alive) return;
         setError(e?.message || "Backend error");
@@ -84,14 +98,14 @@ export default function Dashboard() {
     };
   }, []);
 
-  
+
   useEffect(() => {
     if (!selected) return;
     const stillExists = restaurants.some((r) => r.id === selected.id);
     if (!stillExists) setSelected(null);
   }, [restaurants, selected]);
 
- 
+
   const filteredOrders = useMemo(() => {
     return applyOrderFilters(orders, filters, selected?.id);
   }, [orders, filters, selected?.id]);
@@ -99,7 +113,7 @@ export default function Dashboard() {
   const daily = useMemo(() => groupDailyMetrics(filteredOrders), [filteredOrders]);
   const peak = useMemo(() => peakHourPerDay(filteredOrders), [filteredOrders]);
 
-  
+
   const top3 = useMemo(() => {
     const allInRange = applyOrderFilters(orders, filters);
     return topRestaurantsByRevenue(restaurants, allInRange, 3);
@@ -111,7 +125,7 @@ export default function Dashboard() {
         Restaurant Order Trends Dashboard
       </motion.h1>
 
-      
+
       {loading ? (
         <div className="card" style={{ padding: 14 }}>
           Loading data from PHP backend...
