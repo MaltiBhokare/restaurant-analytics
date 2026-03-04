@@ -56,20 +56,20 @@ try {
     exit;
   }
 
-  // ✅ Top restaurants by revenue
+  
   if ($path === "analytics/top-restaurants") {
     echo json_encode(handle_top_restaurants(), JSON_UNESCAPED_UNICODE);
     exit;
   }
 
-  // ✅ Trends for selected restaurant
+
   if ($path === "analytics/trends") {
     // expects restaurantId
     echo json_encode(handle_trends(), JSON_UNESCAPED_UNICODE);
     exit;
   }
 
-  // ✅ Not found
+ 
   http_response_code(404);
   echo json_encode(["error" => "Route not found", "path" => $path], JSON_UNESCAPED_UNICODE);
 
